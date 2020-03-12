@@ -1,0 +1,417 @@
+
+# HOSPITAL MANAGEMENT SYSTEM
+
+from tkinter import *
+import sqlite3
+from tkinter import messagebox
+
+#connect to the database
+
+conn=sqlite3.connect("database.db")
+#cursor to move around the database
+c=conn.cursor()
+
+#empty list to later append the ids from the database
+ids=[]
+
+def main():
+    root=Tk()
+    app=login(root)
+    root.mainloop()
+
+
+
+#login
+
+class login:
+    def __init__(self,master):
+
+        self.master=master
+        master.title('Login')
+        #resolution of the window
+        master.geometry("450x350")
+        #preventing the resize feature
+        master.resizable(False,False)
+        #creating frame....
+        self.frame=Frame(master,width=450,height=400,bg='lightgrey')
+        self.frame.pack()
+        
+        self.user=StringVar()
+        self.passwrd=StringVar()
+        
+        #labels
+        self.L=Label(master,text="LOGIN",font="Times 20 bold",bg='lightgrey')
+        self.L1=Label(master,text="USERNAME",font="Times 14 bold",bg='lightgrey')
+        self.L2=Label(master,text="PASSWORD",font="Times 14 bold",bg='lightgrey')
+        self.ent1=Entry(master,bd=5,width=35,textvariable=self.user)
+        self.ent2=Entry(master,bd=5,width=35,textvariable=self.passwrd,show="*")                   
+    #..............................................................................................................................................................
+        self.btn_win1=Button(master,text='LOGIN',command=self.crtlogin,bd = 7,width=9,font=('Times 14 bold'),activebackground='red',activeforeground='black',bg='steelblue')
+        self.btn_win1.place(x=10,y=190)
+    #.................................................................................................................................................................
+        self.b2=Button(master,text="RESET",bd=7,font="Times 14 bold",width=9,command=self.clr_cont,bg='steelblue',activebackground='red',activeforeground='black')
+        self.b3=Button(master,text="EXIT",bd=7,font="Times 14 bold",width=9,command=master.destroy,bg='steelblue',activebackground='red',activeforeground='black')
+        self.L.place(x=150,y=50)
+        self.L1.place(x=10,y=100)
+        self.L2.place(x=10,y=140)
+        self.ent1.place(x=200,y=100)
+        self.ent2.place(x=200,y=140)
+ 
+        self.b2.place(x=150,y=190)
+        self.b3.place(x=290,y=190)
+
+#............................................
+    def crtlogin(self):
+        self.u=(self.user.get())
+        self.p=(self.passwrd.get())        
+        if ((self.u =="dikshi" and self.p =="d123") or (self.u =="aditi" and self.p =="a123")):
+                self.master.withdraw()
+                self.newwin1=Toplevel(self.master)
+                self.app=Application(self.newwin1)
+
+        elif (self.u=="" or self.p==""):
+            messagebox.showerror("Error","Please Fill the Details !!")
+            self.ent1.focus()            
+
+        else:            
+            messagebox.showerror("Error","Incorrect Username or Password !!")
+            self.ent1.focus()
+           
+#............................................                  
+        
+    def new_window1(self):
+        self.newwin1=Toplevel(self.master)
+        self.app=Application(self.newwin1)
+
+    def clr_cont(self):
+        self.ent1.delete(0,'end')
+        self.ent2.delete(0,'end')
+
+       
+
+#tkinter window
+class Application:
+    
+    def __init__(self,master):
+        self.master=master
+        master.title('Patient Registeration')
+        #resolution of the window
+        master.geometry("1200x720+0+0")
+        #preventing the resize feature
+        master.resizable(False,False)
+
+        
+        #creating the frames in the master
+        self.left=Frame(master,width=800,height=720,bg='lightgreen')
+        self.left.pack(side=LEFT)
+        self.right=Frame(master,width=400,height=720,bg='steelblue')
+        self.right.pack(side=RIGHT)
+
+        #labels for the window
+        #title
+        self.heading=Label(self.left,text="AD HOSPITAL APPOINTMENTS",font=('Times 35 bold'),fg='black',bg='lightgreen')
+        self.heading.place(x=0,y=0)
+        #patient's name
+        self.name=Label(self.left,text=" PATIENT'S NAME: ",bd = 5,font=('Times 18 bold'),fg='black',bg='lightgreen')
+        self.name.place(x=0,y=100)
+        #patient's age
+        self.age=Label(self.left,text=" PATIENT'S AGE: ",bd = 5,font=('Times 18 bold'),fg='black',bg='lightgreen')
+        self.age.place(x=0,y=140)
+        #gender
+        self.gender=Label(self.left,text=" GENDER: ",bd = 5,font=('Times 18 bold'),fg='black',bg='lightgreen')
+        self.gender.place(x=0,y=180)
+        #address
+        self.address=Label(self.left,text=" ADDRESS: ",bd = 5,font=('Times 18 bold'),fg='black',bg='lightgreen')
+        self.address.place(x=0,y=220)
+        #phone number
+        self.phone=Label(self.left,text=" PHONE NUMBER: ",bd = 5,font=('Times 18 bold'),fg='black',bg='lightgreen')
+        self.phone.place(x=0,y=260)
+        #appointment time
+        self.time=Label(self.left,text=" APPOINTMENT TIME: ",bd = 5,font=('Times 18 bold'),fg='black',bg='lightgreen')
+        self.time.place(x=0,y=300)
+        #drname
+        self.dr=Label(self.left,text=" DOCTOR NAME: ",bd = 5,font=('Times 18 bold'),fg='black',bg='lightgreen')
+        self.dr.place(x=0,y=340)       
+        
+        #entries
+        self.name_ent=Entry(self.left,bd = 5,width=30,font=('arial 10 bold'))
+        self.name_ent.place(x=270,y=110)
+
+        self.age_ent=Entry(self.left,bd = 5,width=30,font=('arial 10 bold'))
+        self.age_ent.place(x=270,y=150)
+
+        self.gender_ent=Entry(self.left,bd = 5,width=30,font=('arial 10 bold'))
+        self.gender_ent.place(x=270,y=190)
+
+        self.address_ent=Entry(self.left,bd = 5,width=30,font=('arial 10 bold'))
+        self.address_ent.place(x=270,y=230)
+
+        self.phone_ent=Entry(self.left,bd = 5,width=30,font=('arial 10 bold'))
+        self.phone_ent.place(x=270,y=270)
+
+        self.time_ent=Entry(self.left,bd = 5,width=30,font=('arial 10 bold'))
+        self.time_ent.place(x=270,y=310)
+        
+        #...........spinbox...........
+        self.v=["Dr.Abhishek Patekar","Dr.Amee Shah","Dr.Nikita Shetty","Dr.Naitik Dubey","Dr.Krunal Oberoi","Dr.Kavita Pandey"]
+        self.s=Spinbox(self.left,bd = 5,width=28,value=self.v,font=('arial 10 bold'))
+        self.s.place(x=270,y=350)
+        
+
+        #button to perform a command
+        self.submit=Button(self.left,text=" ADD APPOINTMENT ",bd = 7,width=20,height=2,font=('arial 11 bold'),activebackground='red',activeforeground='black',bg='steelblue',command=self.add_appointment)
+        self.submit.place(x=280,y=400)
+
+        #button for clearing the contents
+        self.clear=Button(self.left,text=" RESET ",bd = 7,width=20,height=2,font=('arial 11 bold'),bg='steelblue',activebackground='red',activeforeground='black',command=self.clear_cont)
+        self.clear.place(x=20,y=400)
+        
+        #getting the number of appointments fixed to view in the log
+        sql2="SELECT COUNT(*) AS id FROM appointments "
+        self.result=c.execute(sql2)
+        for self.row in self.result:
+            self.id=self.row[0]
+            ids.append(self.id)
+
+        self.pid=self.id+1
+        #ordering the ids
+        self.new=sorted(ids)
+      
+
+
+        #displaying the logs in our right frame
+        self.logs=Label(self.right,text="Logs",font=('Times 20 bold'),bd=5,fg='white',bg='steelblue')
+        self.logs.place(x=0,y=0)
+        
+        self.box=Text(self.right,width=44, height=35,bd = 7,font="sanserif 11 bold")
+        self.box.place(x=20,y=40)
+        self.box.insert(END, "Total Appointments till now : "+""+str(self.id)+"\n")
+
+        #.............................................................................................................................................................................
+        self.btn_win1=Button(self.left,text='Update/Delete',command=self.new_window2,bd = 7,width=20,height=2,font=('arial 11 bold'),activebackground='red',activeforeground='black',bg='steelblue')
+        self.btn_win1.place(x=160,y=480)
+
+
+    def new_window2(self):
+        self.newwin2=Toplevel(self.master)
+        self.app=App(self.newwin2)
+
+        #..............................................................................................................................................................................
+   
+
+    
+     
+        #function to call when the submit button is clicked
+    def add_appointment(self):
+        #getting the user inputs
+        self.val1=self.name_ent.get()
+        self.val2=self.age_ent.get()
+        self.val3=self.gender_ent.get()
+        self.val4=self.address_ent.get()
+        self.val5=self.phone_ent.get()
+        self.val6=self.time_ent.get()
+        self.val7=self.s.get()
+        #checking if the user input is empty
+        if self.val1=='' or self.val2=='' or self.val3=='' or self.val4=='' or self.val5=='' or self.val6=='' or self.val7=='':
+            messagebox.showerror("Error","Please fill up all the details !!")
+        else:
+            sql="INSERT INTO 'appointments' ( name, age, gender, address, phone_number, scheduled_time, dr_name) VALUES(?, ?, ?, ?, ?, ?, ?)"
+            c.execute(sql, (self.val1, self.val2, self.val3, self.val4, self.val5, self.val6, self.val7))
+            conn.commit()
+            messagebox.showinfo("Success","Appointment for "+str(self.val1)+" has been created.")
+
+            self.box.insert(END,"Appointment fixed for "+ str(self.val1)+" at "+str(self.val6)+"\n Your Pid is "+str(self.pid)+". \n")
+
+
+        #FOR CLEARING THE CONTENTS
+    def clear_cont(self):
+        self.name_ent.delete(0,'end')
+        self.age_ent.delete(0,'end')
+        self.gender_ent.delete(0,'end')
+        self.address_ent.delete(0,'end')
+        self.phone_ent.delete(0,'end')
+        self.time_ent.delete(0,'end')
+        self.s.delete(0,'end')
+        
+
+        
+#=============================================================update and delete page================================================================================#
+class App:
+    
+    def __init__(self, master):
+      
+        self.master=master
+        master.title('Update or Delete appoinments')
+
+        #resolution of the window
+        master.geometry("1200x720+0+0")
+        #preventing the resize feature
+        master.resizable(False,False)
+        
+                
+        #creating the frames in the self.f
+        self.f=Frame(master,width=1200,height=1200,bg='lightgrey')
+        self.f.pack()
+        #heading label
+        self.heading=Label(self.f,text="Update or Delete Appointments \n", fg="steelblue",font=('Times 40 bold'),bg='lightgrey')
+        self.heading.place(x=150,y=0)
+
+        #search criteria -name
+        self.name1=Label(self.f,text="Enter Patient's Name / PID: ",font=("Times 18 bold"),bg='lightgrey',bd=4)
+        self.name1.place(x=0,y=70)
+
+        #entry for the name
+        self.namenet=Entry(self.f,width=30,font="arial 9 bold ",bd=4)
+        self.namenet.place(x=300,y=80)
+
+        #search button
+        self.search=Button(self.f,text="SEARCH",width=29,height=1,activebackground="red" ,bd=4,activeforeground="black",bg="steelblue",font="Times 10 bold " , command=self.search_db)
+        self.search.place(x=300,y=115)
+
+    #funtion to search
+    def search_db(self):
+               
+        self.input=self.namenet.get()
+        self.input1=self.namenet.get()
+        
+        #execute sql        
+        sql="SELECT * FROM appointments WHERE name LIKE ? OR id LIKE ?"
+        self.res=c.execute(sql, (self.input,self.input1, ))
+        #..........................................................
+        data=c.fetchall()
+        if len(data)==0:
+            messagebox.showerror("Error","Name/ PID not found !!")
+        else:
+            messagebox.showinfo("Success","Name/ PID found !!")
+            sql="SELECT * FROM appointments WHERE name LIKE ? OR id LIKE ?"
+            self.res=c.execute(sql, (self.input,self.input1, ))
+            for self.row in self.res:
+                        self.name=self.row[1]
+                        self.age=self.row[2]
+                        self.gender=self.row[3]
+                        self.address=self.row[4]
+                        self.phone=self.row[5]
+                        self.time=self.row[6]
+                        self.dr=self.row[7]
+            
+        #.........................................................
+        #creating the update form
+            self.uname=Label(self.f,text="Patient's Name: ",font=("Times 19 bold"),bg='lightgrey',bd=4)
+            self.uname.place(x=0,y=140)
+
+            self.uage=Label(self.f,text="Age: ",font=("Times 18 bold"),bg="lightgrey",bd=4)
+            self.uage.place(x=0,y=180)
+
+            self.ugender=Label(self.f,text="Gender: ",font=("Times 18 bold"),bg="lightgrey",bd=4)
+            self.ugender.place(x=0,y=220)
+
+            self.uadress=Label(self.f,text="Address: ",font=("Times 18 bold"),bg="lightgrey",bd=4)
+            self.uadress.place(x=0,y=260)
+
+            self.uphone=Label(self.f,text="Phone Number: ",font=("Times 18 bold"),bg="lightgrey",bd=4)
+            self.uphone.place(x=0,y=300)
+
+            self.utime=Label(self.f,text="Appointment Time: ",font=("Times 18 bold"),bg="lightgrey",bd=4)
+            self.utime.place(x=0,y=340)
+
+            self.udr=Label(self.f,text=" Doctor Name: ",bd = 4,font=('Times 18 bold'),bg='lightgrey')
+            self.udr.place(x=0,y=380)
+
+            #entries for these labels
+            self.ent1=Entry(self.f,width=30,font="arial 9 bold ",bd=4)
+            self.ent1.place(x=300,y=150)
+            self.ent1.insert(END, str(self.name))
+            
+            self.ent2=Entry(self.f,width=30,font="arial 9 bold ",bd=4)
+            self.ent2.place(x=300,y=190)
+            self.ent2.insert(END, str(self.age))
+            
+            self.ent3=Entry(self.f,width=30,font="arial 9 bold ",bd=4)
+            self.ent3.place(x=300,y=230)
+            self.ent3.insert(END, str(self.gender))
+            
+            self.ent4=Entry(self.f,width=30,font="arial 9 bold ",bd=4)
+            self.ent4.place(x=300,y=270)
+            self.ent4.insert(END, str(self.address))
+            
+            self.ent5=Entry(self.f,width=30,font="arial 9 bold ",bd=4)
+            self.ent5.place(x=300,y=310)
+            self.ent5.insert(END, str(self.phone))
+            
+            self.ent6=Entry(self.f,width=30,font="arial 9 bold ",bd=4)
+            self.ent6.place(x=300,y=350)
+            self.ent6.insert(END, str(self.time))
+                    
+            #...........spinbox...........
+            self.v=["","Dr.Abhishek Patekar","Dr.Amee Shah","Dr.Nikita Shetty","Dr.Naitik Dubey","Dr.Krunal Oberoi","Dr.Kavita Pandey"]
+            self.us=Spinbox(self.f,bd = 4,width=28,value=self.v,font=('arial 10 bold'))
+            self.us.place(x=300,y=390)
+            self.us.insert(END, str(self.dr))           
+
+            #button to execute the update
+            self.update=Button(self.f,text=" UPDATE ",width=25,height=2,bg="steelblue",bd=7,font="arial 9 bold " ,activebackground="red" ,activeforeground="black",command=self.update_db)
+            self.update.place(x=310,y=450)
+
+            #button to delete the record
+            self.deleterec=Button(self.f,text=" DELETE ",width=25,height=2,bg="red",bd=7,font="arial 9 bold " ,activebackground="black" ,activeforeground="red",command=self.delete_db)
+            self.deleterec.place(x=30,y=450)
+
+            #button to clear the content
+            self.clr=Button(self.f,text=" RESET ",width=25,height=2,bg="black",fg="white",bd=8,font="arial 9 bold " ,activebackground="white" ,activeforeground="black",command=self.clr_db)
+            self.clr.place(x=160,y=520)
+
+    def update_db(self):
+        #geting the updated values into the variables
+        self.var1=self.ent1.get()
+        self.var2=self.ent2.get()
+        self.var3=self.ent3.get()
+        self.var4=self.ent4.get()
+        self.var5=self.ent5.get()
+        self.var6=self.ent6.get()
+        self.var7=self.us.get()
+
+        query="UPDATE appointments SET name=?,age=?,gender=?,address=?,phone_number=?,scheduled_time=?,dr_name=? WHERE name LIKE ?"
+        self.run= c.execute(query, (self.var1,self.var2,self.var3,self.var4,self.var5,self.var6,self.var7,self.namenet.get()))
+        conn.commit()
+        messagebox.showinfo("Update","Succesfully Updated your details.")
+
+    def delete_db(self):
+        #to delete the appointment
+        sql2="DELETE FROM appointments WHERE name LIKE ? OR id LIKE ?"
+        c.execute(sql2, (self.input,self.input1, ) )
+        conn.commit()
+        messagebox.showinfo("Delete","Succesfully Deleted the Appointment.")
+        self.ent1.destroy()
+        self.ent2.destroy()
+        self.ent3.destroy()
+        self.ent4.destroy()
+        self.ent5.destroy()
+        self.ent6.destroy()
+        self.us.destroy()
+
+    def clr_db(self):
+        #to clr content
+        self.namenet.delete(0,'end')
+        self.ent1.delete(0,'end')
+        self.ent2.delete(0,'end')
+        self.ent3.delete(0,'end')
+        self.ent4.delete(0,'end')
+        self.ent5.delete(0,'end')
+        self.ent6.delete(0,'end')
+        self.us.delete(0,'end')
+
+
+
+
+
+                
+
+#..........................................
+if __name__=='__main__':
+    main()
+           
+
+
+
+
+
