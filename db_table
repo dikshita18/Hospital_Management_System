@@ -1,0 +1,22 @@
+
+
+# creation of appointments table
+
+CREATE TABLE "appointments" (
+	"ID"	INTEGER PRIMARY KEY AUTOINCREMENT,
+	"name"	TEXT,
+	"age"	TEXT,
+	"gender"	TEXT,
+	"address"	TEXT,
+	"phone_number"	INTEGER,
+	"scheduled_time"	TEXT,
+	"dr_name"	TEXT
+);
+
+
+# creation of total no of appointment's table
+
+CREATE TABLE "sqlite_sequence" (
+	"name"	TEXT,
+	"seq"	TEXT
+);
