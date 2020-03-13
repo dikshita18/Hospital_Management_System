@@ -19,8 +19,6 @@ def main():
     app=login(root)
     root.mainloop()
 
-
-
 #login
 
 class login:
